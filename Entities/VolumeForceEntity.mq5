@@ -10,9 +10,9 @@
 #include "../utils/Percentual.mq5";
 #include "../utils/HurstExponent.mq5";
 
-int volRange1 = 6;
-int volRange2 = 9;
-int volRange3 = 15;
+int volRange1 = 5;
+int volRange2 = 8;
+int volRange3 = 12;
 int volRange4 = 21;
 int hurstLen = 30;
 //+------------------------------------------------------------------+
@@ -42,6 +42,7 @@ public:
    double            hurstExponent;
    double            mean;
    int               spreadTotal;
+   double            iForceIndex;
 
 
    EffortResultStruct effortResult1;
@@ -104,12 +105,12 @@ public:
       effortResult.spread = (buy.spread + sell.spread + doji.spread);
 
       effortResult.effort = (buy.effort  + sell.effort + doji.effort);
-      effortResult.effortBuyPercentual = NormalizeDouble((double)(100 / (double)effortResult.effort) *  buy.effort, 2);
-      effortResult.effortSellPercentual = NormalizeDouble((double)(100 / (double)effortResult.effort) * sell.effort, 2);
+      effortResult.effortBuyPercentual = effortResult.effort > 0 ? NormalizeDouble((double)(100 / (double)effortResult.effort) *  buy.effort, 2) : 0;
+      effortResult.effortSellPercentual = effortResult.effort > 0 ? NormalizeDouble((double)(100 / (double)effortResult.effort) * sell.effort, 2) : 0;
 
       effortResult.result = (buy.result + sell.result + doji.result);
-      effortResult.resultBuyPercentual = NormalizeDouble((double)(100 / (double)effortResult.result) * buy.result, 2);
-      effortResult.resultSellPercentual = NormalizeDouble((double)(100 / (double)effortResult.result) * sell.result, 2);
+      effortResult.resultBuyPercentual = effortResult.result > 0 ? NormalizeDouble((double)(100 / (double)effortResult.result) * buy.result, 2) : 0;
+      effortResult.resultSellPercentual = effortResult.result > 0 ? NormalizeDouble((double)(100 / (double)effortResult.result) * sell.result, 2) : 0;
       /*
       Print("------------------------------------------------------");
       Print("buy.effort: " + buy.effort);

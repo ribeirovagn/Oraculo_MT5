@@ -4,13 +4,6 @@
 //|                                          https://w3dsoftware.com |
 //+------------------------------------------------------------------+
 
-int inp_atr_period=14;//ATR period
-int inp_RSI_MA_period=14;//RSI MA period
-int inp_RSI_app_price=PRICE_CLOSE;//RSI app price
-int inp_f_MA_period=13;//Force Index MA period
-ENUM_MA_METHOD inp_f_MA_method=MODE_SMA;//Force Index MA method
-ENUM_APPLIED_VOLUME inp_f_app_vol=VOLUME_TICK;//Force Index app volume
-
 bool inp_back=false;//Back
 uchar inp_scale_transparency=0;//Scale transparency, 0..255
 uchar inp_needle_transparency=0;//Needle transparency, 0..255
@@ -86,23 +79,24 @@ int DashInit()
 //--- setting needle parameters
    GaugeSetNeedleParameters(gg[2],NDCS_SMALL,DEF_COL_NCENTER,DEF_COL_NEEDLE,NEEDLE_FILL_AA);
 //---
-//--- building the gg03 gauge, ATR
+//--- building the gg03 gauge, Hurst
    if(GaugeCreate("gg03",gg[3],30,0,180,"gg00",RELATIVE_MODE_VERT,
                   CORNER_LEFT_LOWER,inp_back,inp_scale_transparency,inp_needle_transparency)==false)
       return(INIT_FAILED);
 //--- setting body parameters
    GaugeSetCaseParameters(gg[3],CASE_ROUND,DEF_COL_CASE,CASE_BORDER_THIN,DEF_COL_BORDER,SIZE_MIDDLE);
 //--- setting parameters of the scale and marks on the scale
-   GaugeSetScaleParameters(gg[3],270,45,0.001,0.004,MUL_00001,SCALE_INNER,clrBlack);
-   GaugeSetMarkParameters(gg[3],MARKS_INNER,SIZE_LARGE,0.001,9,3);
+   GaugeSetScaleParameters(gg[3],270,45,0,1,MUL_1,SCALE_INNER,clrBlack);
+   GaugeSetMarkParameters(gg[3],MARKS_INNER,SIZE_LARGE,1,9,3);
    GaugeSetMarkLabelFont(gg[3],SIZE_LARGE,"Ubuntu",false,false,DEF_COL_MARK_FONT);
 //--- highlighting ranges on the scale
-   GaugeSetRangeParameters(gg[3],0,true,0.002,0.001,clrYellow);
+   //GaugeSetRangeParameters(gg[3],0,true,0.4,0,clrYellow);
+   GaugeSetRangeParameters(gg[3],1,true,0.55,0.4,clrAquamarine);
+   GaugeSetRangeParameters(gg[3],2,true,1,0.55,clrLimeGreen);
 //--- setting text labels
-   GaugeSetLegendParameters(gg[3],LEGEND_DESCRIPTION,true,"ATR",7,-140,26,"Ubuntu",false,false);
-//GaugeSetLegendParameters(gg[3],LEGEND_UNITS,true,"USD",8,180,5,"Ubuntu",true,false);
+   GaugeSetLegendParameters(gg[3],LEGEND_DESCRIPTION,true,"R/S",7,-140,26,"Ubuntu",false,false);
    GaugeSetLegendParameters(gg[3],LEGEND_VALUE,true,"5",2,180,14,"Ubuntu",true,false);
-   GaugeSetLegendParameters(gg[3],LEGEND_MUL,true,"",2,0,20,"Ubuntu",true,false);
+   GaugeSetLegendParameters(gg[3],LEGEND_MUL,true,"",2,0, 5,"Ubuntu",true,false);
 //--- setting needle parameters
    GaugeSetNeedleParameters(gg[3],NDCS_SMALL,DEF_COL_NCENTER,DEF_COL_NEEDLE,NEEDLE_FILL_AA);
 //---
@@ -149,16 +143,7 @@ int DashInit()
       GaugeRedraw(gg[i]);
       GaugeNewValue(gg[i],0);
      }
-//--- creating handles of indicators
-   handle_ATR=iATR(Symbol(),Period(),inp_atr_period);
-   if(handle_ATR==INVALID_HANDLE)
-      return(INIT_FAILED);
-   handle_RSI=iRSI(Symbol(),Period(),inp_RSI_MA_period,inp_RSI_app_price);
-   if(handle_ATR==INVALID_HANDLE)
-      return(INIT_FAILED);
-   handle_Force = iForce(Symbol(),Period(),inp_f_MA_period,inp_f_MA_method,inp_f_app_vol);
-   if(handle_ATR==INVALID_HANDLE)
-      return(INIT_FAILED);
+
 //---
    return(INIT_SUCCEEDED);
   }
@@ -177,9 +162,11 @@ void DashDeinit(const int reason)
 //+------------------------------------------------------------------+
 void DashCalculate(VolumeForceEntity &VolumeForce)
   {
-   GaugeNewValue(gg[0],VolumeForce.buy1.resultPercentual);
-   GaugeNewValue(gg[1],VolumeForce.effortResult1.resultBuyPercentual);
-   GaugeNewValue(gg[2],VolumeForce.buy1.effortPercentual);
+   GaugeNewValue(gg[0],VolumeForce.effortResult1.resultBuyPercentual);
+   GaugeNewValue(gg[1],VolumeForce.effortResult4.effortBuyPercentual);
+   GaugeNewValue(gg[2],VolumeForce.effortResult1.effortBuyPercentual);
+   // HURST
+   GaugeNewValue(gg[3],VolumeForce.hurstExponent);
    GaugeNewValue(gg[5],VolumeForce.effortResult1.effortBuyPercentual);
    
   }
