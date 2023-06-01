@@ -22,7 +22,7 @@ class CandleEntity {
    CandleStruct getInfo(MqlRates &rate){
       
       CandleStruct _candle;
-      
+      _candle.DateTime = rate.time;
       _candle.Open = rate.open;
       _candle.High = rate.high;
       _candle.Low = rate.low;
@@ -32,7 +32,7 @@ class CandleEntity {
       _candle.Spread = rate.spread;
       _candle.TickVol = rate.tick_volume;
       _candle.RealVol = rate.real_volume;
-      _candle.Result = (MathAbs((rate.open) - (rate.close)) * 100);
+      _candle.Result = (int)(MathAbs((rate.open) - (rate.close)) * 100);
       
       return _candle;
       

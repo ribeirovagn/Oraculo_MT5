@@ -1,4 +1,5 @@
 struct CandleStruct {
+    datetime DateTime;
     double Open;
     double High;
     double Low;
