@@ -3,8 +3,7 @@
 //|                                                   Vagner Ribeiro |
 //|                                          https://w3dsoftware.com |
 //+------------------------------------------------------------------+
-struct EffortResultStruct
-  {
+struct EffortResultStruct {
    long              effort;
    long              result;
    long              spread;
@@ -13,5 +12,5 @@ struct EffortResultStruct
    double            resultBuyPercentual;
    double            effortSellPercentual;
    double            resultSellPercentual;
-  };
+};
 //+------------------------------------------------------------------+

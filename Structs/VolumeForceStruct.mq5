@@ -5,8 +5,7 @@
 //+------------------------------------------------------------------+
 #include "./CandleStruct.mq5";
 
-struct VolumeForce
-  {
+struct VolumeForce {
    CandleStruct        rates[];
    double              mean;
    long                effort;
@@ -15,6 +14,6 @@ struct VolumeForce
    int                result;
    long                priceAction;
    int                spread;
-  };
+};
 
 //+------------------------------------------------------------------+

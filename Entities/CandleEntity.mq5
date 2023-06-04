@@ -1,26 +1,26 @@
+//+------------------------------------------------------------------+
+//|                                                       Oraculo_EA |
+//|                                                   Vagner Ribeiro |
+//|                                          https://w3dsoftware.com |
+//+------------------------------------------------------------------+
 #include "../structs/CandleStruct.mq5";
 
 class CandleEntity {
-   private:
-   MqlRates rates[];
-       
-   public: 
-   
-   void setCandles(int qnt, CandleStruct &arr[])
-   {
-      
+ private:
+   MqlRates          rates[];
+
+ public:
+
+   void              setCandles(int qnt, CandleStruct &arr[]) {
       CopyRates(_Symbol, _Period, 0, qnt, this.rates);
       //ArraySetAsSeries(this.rates, false);
       ArrayResize(arr, ArraySize(this.rates));
-      
       for(int i = 0; i < ArraySize(this.rates); i++) {
          arr[i] = this.getInfo(this.rates[i]);
       }
-      
    }
 
-   CandleStruct getInfo(MqlRates &rate){
-      
+   CandleStruct      getInfo(MqlRates &rate) {
       CandleStruct _candle;
       _candle.DateTime = rate.time;
       _candle.Open = rate.open;
@@ -33,8 +33,7 @@ class CandleEntity {
       _candle.TickVol = rate.tick_volume;
       _candle.RealVol = rate.real_volume;
       _candle.Result = (int)(MathAbs((rate.open) - (rate.close)) * 100);
-      
       return _candle;
-      
    }
 }
+//+------------------------------------------------------------------+
