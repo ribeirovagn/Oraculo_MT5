@@ -4,6 +4,7 @@
 //|                                          https://w3dsoftware.com |
 //+------------------------------------------------------------------+
 #include "../structs/CandleStruct.mq5";
+#include "../utils/Points.mq5";
 
 class CandleEntity {
  private:
@@ -32,7 +33,7 @@ class CandleEntity {
       _candle.Spread = rate.spread;
       _candle.TickVol = rate.tick_volume;
       _candle.RealVol = rate.real_volume;
-      _candle.Result = (int)(MathAbs((rate.open) - (rate.close)) * 100);
+      _candle.Result = Points::pipsToPoints(MathAbs((rate.open) - (rate.close)));
       return _candle;
    }
 }
