@@ -7,14 +7,16 @@ class Points {
 
 public:
 
-  
-
    int static pipsToPoints(double pips) {
-      return (int)(pips / SymbolInfoDouble(_Symbol, SYMBOL_POINT));
+      return (int)(pips / _Point);
    }
 
    double static pointsToPips(ulong points) {
-      return (double)(points * SymbolInfoDouble(_Symbol, SYMBOL_POINT));
+      return (double)(points * _Point);
+   }
+   
+   double static formatCurrency(double value) {
+      return NormalizeDouble(value, _Digits);
    }
 };
 //+------------------------------------------------------------------+
